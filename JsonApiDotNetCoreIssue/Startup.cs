@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using JsonApiDotNetCore.Data;
 using JsonApiDotNetCore.Extensions;
+using JsonApiDotNetCore.Models;
 using JsonApiDotNetCore.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -32,11 +33,14 @@ namespace JsonApiDotNetCoreIssue
                 {
                     options.UseInMemoryDatabase("WeatherForecasts");
                 })
-                .AddScoped<IGetAllService<WeatherForecast>, WeatherForecastService>()
+                .AddScoped<IResourceService<WeatherForecastModel, int>, WeatherForecastService>()
                 .AddScoped<IEntityRepository<WeatherForecast>, WeatherForecastRepository>()
+                .AddScoped<IResourceMapper, WeatherForecastMapper>()
+                .AddScoped<ResourceDefinition<WeatherForecast>, WeatherForecastDefinition>()
                 .AddJsonApi<WeatherForecastContext>(options =>
                 {
                     options.EnableResourceHooks = true;
+                    options.BuildResourceGraph(builder => builder.AddResource<WeatherForecastModel>());
                 }, services.AddMvcCore().SetCompatibilityVersion(CompatibilityVersion.Version_2_2));
         }
 

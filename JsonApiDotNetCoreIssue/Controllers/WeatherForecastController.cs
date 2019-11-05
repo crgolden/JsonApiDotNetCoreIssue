@@ -6,15 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 namespace JsonApiDotNetCoreIssue.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [DisableRoutingConvention]
-    public class WeatherForecastController : BaseJsonApiController<WeatherForecast>
+    public class WeatherForecastController : BaseJsonApiController<WeatherForecastModel>
     {
-        private readonly IGetAllService<WeatherForecast> _resourceService;
+        private readonly IResourceService<WeatherForecastModel, int> _resourceService;
 
         public WeatherForecastController(
             IJsonApiContext jsonApiContext,
-            IGetAllService<WeatherForecast> resourceService)
+            IResourceService<WeatherForecastModel, int> resourceService)
             : base(jsonApiContext, resourceService)
         {
             _resourceService = resourceService;
