@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using JsonApiDotNetCore.Data;
 using JsonApiDotNetCore.Extensions;
+using JsonApiDotNetCore.Hooks;
 using JsonApiDotNetCore.Models;
 using JsonApiDotNetCore.Services;
 using Microsoft.AspNetCore.Builder;
@@ -33,7 +34,7 @@ namespace JsonApiDotNetCoreIssue
                 {
                     options.UseInMemoryDatabase("WeatherForecasts");
                 })
-                .AddScoped<IResourceService<WeatherForecastModel, int>, WeatherForecastService>()
+                .AddScoped<IResourceService<WeatherForecast, int>, WeatherForecastService>()
                 .AddScoped<IEntityRepository<WeatherForecast>, WeatherForecastRepository>()
                 .AddScoped<IResourceMapper, WeatherForecastMapper>()
                 .AddScoped<ResourceDefinition<WeatherForecast>, WeatherForecastDefinition>()
@@ -42,6 +43,10 @@ namespace JsonApiDotNetCoreIssue
                     options.EnableResourceHooks = true;
                     options.BuildResourceGraph(builder => builder.AddResource<WeatherForecastModel>());
                 }, services.AddMvcCore().SetCompatibilityVersion(CompatibilityVersion.Version_2_2));
+
+            // make sure this override is added AFTER you call AddJsonApi( .. ), because else it is overwritten by it
+            services.AddSingleton(typeof(IHooksDiscovery<>), typeof(HooksDiscoveryOverride<>));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

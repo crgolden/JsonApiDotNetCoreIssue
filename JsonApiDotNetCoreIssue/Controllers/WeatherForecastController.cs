@@ -8,13 +8,13 @@ namespace JsonApiDotNetCoreIssue.Controllers
     [ApiController]
     [Route("[controller]")]
     [DisableRoutingConvention]
-    public class WeatherForecastController : BaseJsonApiController<WeatherForecastModel>
+    public class WeatherForecastController : BaseJsonApiController<WeatherForecast>
     {
-        private readonly IResourceService<WeatherForecastModel, int> _resourceService;
+        private readonly IResourceService<WeatherForecast, int> _resourceService;
 
         public WeatherForecastController(
             IJsonApiContext jsonApiContext,
-            IResourceService<WeatherForecastModel, int> resourceService)
+            IResourceService<WeatherForecast, int> resourceService)
             : base(jsonApiContext, resourceService)
         {
             _resourceService = resourceService;

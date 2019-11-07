@@ -2,17 +2,16 @@
 using JsonApiDotNetCore.Hooks;
 using JsonApiDotNetCore.Models;
 using JsonApiDotNetCore.Services;
+using Microsoft.Extensions.Logging;
 
 namespace JsonApiDotNetCoreIssue
 {
-    public class WeatherForecastService : EntityResourceService<WeatherForecastModel, WeatherForecast, int>
+    public class WeatherForecastService : EntityResourceService<WeatherForecast, int>
     {
-        public WeatherForecastService(
-            IJsonApiContext jsonApiContext,
-            IEntityRepository<WeatherForecast, int> entityRepository,
-            IResourceHookExecutor hookExecutor,
-            IResourceMapper mapper)
-        : base(jsonApiContext, entityRepository, hookExecutor, mapper)
+        public WeatherForecastService(IJsonApiContext jsonApiContext,
+                                      IEntityRepository<WeatherForecast, int> entityRepository,
+                                      ILoggerFactory loggerFactory = null,
+                                      IResourceHookExecutor hookExecutor = null) : base(jsonApiContext, entityRepository, loggerFactory, hookExecutor)
         {
         }
     }
